@@ -1,0 +1,10 @@
+<!doctype html>
+<html lang="en">
+
+<%- include('./include/header.ejs', { title: 'SxncD - Dashboard' }) %>
+
+<% for (const type in config.appModules) { %>
+	<%- include('./include/app.ejs', { app: config.appModules[type] }) %>
+<% } %>
+
+<%- include('./include/footer.ejs') %>

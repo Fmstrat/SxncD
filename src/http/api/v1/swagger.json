@@ -1,0 +1,21 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "2",
+        "title": "FedID API",
+        "description": "Version 2 API for the FedID DID Resolver."
+    },
+    "basePath": "/api/v2",
+    "schemes": ["https"],
+    "tags": [
+        {
+            "name": "Authentication",
+            "description": "Operations related to authorization"
+        },
+        {
+            "name": "Synchronization",
+            "description": "Operations related to the synchronization"
+        }
+    ],
+    "paths": {}
+}

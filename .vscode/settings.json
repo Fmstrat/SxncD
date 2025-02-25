@@ -1,0 +1,14 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 9632,
+            "driver": "PostgreSQL",
+            "name": "local-sxncd",
+            "database": "sxncd",
+            "username": "sxncd",
+            "password": "password"
+        }
+    ]
+}

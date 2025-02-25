@@ -1,0 +1,119 @@
+<% const cardStyle=`"background: linear-gradient(333deg, ${app.background.color1} 0%, ${app.background.color2} 100%);"`;
+	const userApp=user.apps.find(ua=> app.type === ua.type);
+	const buttonStyle = `"padding: 8px 10px 8px 10px; border-radius: 16px !important; background-color:
+	${app.button.color} !important; border: none !important;"`
+	%>
+
+	<script>
+		function copyToClipboard(text) {
+			if (window.clipboardData && window.clipboardData.setData) {
+				// Internet Explorer specific code path to prevent textarea being shown while dialog is visible.
+				return clipboardData.setData('Text', text);
+			} else if (document.queryCommandSupported && document.queryCommandSupported('copy')) {
+				var textarea = document.createElement("textarea");
+				textarea.textContent = text;
+				// Prevent scrolling to bottom of page in Microsoft Edge.
+				textarea.style.position = 'fixed';
+				document.body.appendChild(textarea);
+				textarea.select();
+				const flash = document.createElement('div');
+				flash.style.position = 'fixed';
+				flash.style.top = '0';
+				flash.style.left = '0';
+				flash.style.width = '100%';
+				flash.style.backgroundColor = '#000';
+				flash.style.color = '#ggg';
+				flash.style.opacity = '0.7';
+				flash.style.textAlign = 'center';
+				flash.style.fontSize = '12px';
+				flash.style.padding = '10px';
+				try {
+					const cmd = document.execCommand('copy'); // Security exception may be thrown by some browsers.
+					flash.innerHTML = 'API key copied to clipboard';
+					document.body.appendChild(flash);
+					setTimeout(function () {
+						document.body.removeChild(flash);
+					}, 1500);
+					return cmd;
+				} catch (ex) {
+					flash.style.backgroundColor = '#f00';
+					flash.innerHTML = 'API key copy failed';
+					document.body.appendChild(flash);
+					setTimeout(function () {
+						document.body.removeChild(flash);
+					}, 1500);
+					return false;
+				} finally {
+					document.body.removeChild(textarea);
+				}
+			}
+		}
+	</script>
+
+	<div class="mdc-card mdc-theme--dark" style=<%- cardStyle %>>
+
+		<div style="display: flex; align-items: center;">
+			<div style="width: 50px">
+				<%- app.logo %>
+			</div>
+			<h2 style="margin-left: 4px;">
+				<%= app.title %>
+			</h2>
+		</div>
+
+		<label class="mdc-text-field mdc-text-field--outlined mdc-text-field--focused">
+			<span class="mdc-notched-outline" style="--mdc-theme-primary: rgba(255, 255, 255, 0.3)">
+				<span class="mdc-notched-outline__leading"></span>
+				<span class="mdc-notched-outline__trailing"></span>
+			</span>
+			<input style="color: #fff; text-overflow: ellipsis;" type="text" id="api-key-input"
+				aria-describedby="api-key-helper" class="mdc-text-field__input" disabled type="text"
+				value="<%= userApp.apiKey %>">
+			<i style="color: #fff" class="material-icons mdc-text-field__icon mdc-text-field__icon--trailing"
+				tabindex="0" role="button" onclick="copyToClipboard('<%= userApp.apiKey %>')">
+				content_copy
+			</i>
+		</label>
+		<div class="mdc-text-field-helper-line">
+			<div style="color: #fff" class="mdc-text-field-helper-text" id="api-key-helper" aria-hidden="false">API Key
+			</div>
+		</div>
+
+		<div style="display: flex; justify-content: flex-end;">
+			<button style="width: 140px; --mdc-theme-primary: <%= app.button.color %>"
+				class="mdc-button mdc-button--raised mdc-button--leading"
+				onclick="window.location.href='/refresh?app=obtainium'">
+				<span class="mdc-button__ripple"></span>
+				<i class="material-icons mdc-button__icon" aria-hidden="true">refresh</i>
+				<span class="mdc-button__label">Refresh</span>
+			</button>
+		</div>
+
+		<% if (userApp.devices?.length> 0) { %>
+			<h3 style="margin-bottom: 0px">Synced devices</h3>
+			<span class="mdc-evolution-chip-set" role="grid" style="padding-top: 16px">
+				<span class="mdc-evolution-chip-set__chips" role="presentation">
+
+					<% for (const device of userApp.devices.sort((a, b)=> a.identifier.localeCompare(b.identifier))) {
+						%>
+						<span style="padding-right: 10px" class="mdc-evolution-chip" role="row"
+							id="device-<%- device.id %>">
+							<span class="mdc-evolution-chip__cell mdc-evolution-chip__cell--primary" role="gridcell">
+									<button style=<%- buttonStyle %> class="mdc-evolution-chip__action
+										mdc-evolution-chip__action--primary"
+										type="button" tabindex="0">
+										<span
+											class="mdc-evolution-chip__ripple mdc-evolution-chip__ripple--primary"></span>
+										<span class="mdc-evolution-chip__text-label">
+											<%= device.identifier %>
+										</span>
+									</button>
+							</span>
+						</span>
+						<% } %>
+
+				</span>
+			</span>
+			<% } %>
+
+	</div>

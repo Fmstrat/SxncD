@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+
+  sxncd-server:
+    image: nowsci/sxncd
+    container_name: sxncd-server
+    ports:
+      - 127.0.0.1:9693:9693
+    environment:
+      # BASE CONFIGURATION
+      # ==================
+      # If you wish to display debug logging
+      # DEBUG: "true"
+      #
+      # DB URL
+      POSTGRES_URL: postgresql://sxncd:password@sxncd-db/sxncd
+      # Public URL, callback URLS will be PUBLIC_URL + '/callback/<module>'
+      PUBLIC_URL: http://localhost:9693
+      # Enabled app modules
+      APP_MODULES: obtainium
+      # Enabled authentication modules
+      AUTH_MODULES: oidc, github, google
+
+      # AUTH MODULES
+      # ============
+
+      # OpenID Connect
+      # --------------
+      # Works with any OIDC provider
+      OIDC_CLIENT_ID: clientid
+      OIDC_CLIENT_SECRET: secret
+      OIDC_ISSUER: https://keycloak.domain.tld/realms/myrealm
+      OIDC_AUTHORIZATION_URL: https://keycloak.domain.tld/realms/myrealm/protocol/openid-connect/auth
+      OIDC_TOKEN_URL: https://keycloak.domain.tld/realms/myrealm/protocol/openid-connect/token
+      OIDC_USERINFO_URL: https://keycloak.domain.tld/realms/myrealm/protocol/openid-connect/userinfo
+
+      # GitHub
+      # --------------
+      # Set up your GitHub app: https://github.com/settings/applications/new
+      GITHUB_CLIENT_ID: clientid
+      GITHUB_CLIENT_SECRET: secret
+
+      # Google
+      # --------------
+      # Set up your Google app: https://console.developers.google.com/
+      #   - Create a new app
+      #   - Set up auth: https://console.cloud.google.com/auth/overview
+      GOOGLE_CLIENT_ID: clientid
+      GOOGLE_CLIENT_SECRET: secret
+
+    restart: unless-stopped
+    depends_on:
+      - sxncd-db
+    networks:
+      - sxncd
+
+  sxncd-db:
+    image: postgres:17-alpine
+    container_name: sxncd-db
+    environment:
+      - POSTGRES_USER=sxncd
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=sxncd
+    ports:
+      - 127.0.0.1:5432:5432
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - sxncd      
+
+networks:
+  sxncd:
