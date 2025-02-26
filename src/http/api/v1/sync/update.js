@@ -8,6 +8,7 @@ export async function update(req, res) {
         error: "Unknown error",
     };
     const config = getConfig();
+    const client = await getPool();
     try {
         const apiKey = req.headers.authorization;
         if (!apiKey) {
@@ -35,7 +36,6 @@ export async function update(req, res) {
             throw new Error("Saved timestamp is required");
         }
         const savedTs = new Date(savedTsStr);
-        const client = await getPool();
         const validRes = await client.query(`
             SELECT
                 a.id as auth_id,
@@ -234,6 +234,7 @@ export async function update(req, res) {
             console.error(e);
         response.error = e.message;
     } finally {
+        client.release();
         if (config.debug) console.log({response: { ...response, data: '<redacted>'}})
         res.status(response.error ? 400 : 200).json(response);
     }
