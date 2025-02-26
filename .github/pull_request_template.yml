@@ -1,0 +1,49 @@
+name: Pull Request
+about: The following form provides context for your submitted PR.
+title: '[PR]: '
+labels:
+  - review
+ref: main
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out the below information about your PR.
+  - type: textarea
+    id: do
+    attributes:
+      label: What does this PR do?
+      description: Explain the motivation behind your PR.
+      placeholder: A clear and concise description of what the PR is. Please include screenshots where relevant.
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why is this change important?
+      description: Explain the motivation behind your PR.
+    validations:
+      required: true      
+  - type: textarea
+    id: test
+    attributes:
+      label: How to test this PR locally?
+      description: Commands to run the tests or instructions to test the changes
+    validations:
+      required: true      
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our Code of Conduct as defined in `/CODE_OF_CONDUCT.md`.
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true
+  - type: checkboxes
+    id: cla
+    attributes:
+      label: Contributor Agreement
+      description: By checking the box below, I am agreeing to the Contributor Agreement(s) as defined in links from `/CONTRIBUTING.md`.
+      options:
+        - label: I agree to the Contributor Agreement(s)
+          required: true          

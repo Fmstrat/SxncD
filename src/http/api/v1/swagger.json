@@ -1,21 +1,108 @@
 {
     "swagger": "2.0",
     "info": {
-        "version": "2",
-        "title": "FedID API",
-        "description": "Version 2 API for the FedID DID Resolver."
+        "version": "1",
+        "title": "SxncD API",
+        "description": "Version 1 API for the SxncD server."
     },
-    "basePath": "/api/v2",
+    "basePath": "/api/v1",
     "schemes": ["https"],
     "tags": [
-        {
-            "name": "Authentication",
-            "description": "Operations related to authorization"
-        },
         {
             "name": "Synchronization",
             "description": "Operations related to the synchronization"
         }
     ],
-    "paths": {}
+    "paths": {
+        "/sync/update": {
+            "post": {
+                "tags": ["Synchronization"],
+                "summary": "Update device settings",
+                "description": "Updates the settings of a specified device.",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "required": true,
+                        "type": "string",
+                        "default": "application/json"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "deviceName": {
+                                    "type": "string",
+                                    "description": "The name of the device."
+                                },
+                                "savedTs": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "description": "Timestamp when the settings were saved, in ISO 8601 format."
+                                },
+                                "settings": {
+                                    "type": "string",
+                                    "description": "String representing the device settings."
+                                }
+                            },
+                            "required": ["deviceName", "savedTs", "settings"],
+                            "additionalProperties": false
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful update",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "success": {
+                                    "type": "boolean",
+                                    "description": "Indicates if the update was successful",
+                                    "example": true
+                                },
+                                "data": {
+                                    "type": "string",
+                                    "description": "The most up to date settings data",
+                                    "example": "eyAic2V0dGluZ..."
+                                },
+                                "action": {
+                                    "type": "string",
+                                    "description": "What action should be taken",
+                                    "enum": ["created", "none", "existingNewer", "incomingNewer"],
+                                    "example": "created"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error in the request, such as invalid signature",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "success": {
+                                    "type": "boolean",
+                                    "description": "Indicates if the update was successful",
+                                    "example": false
+                                },
+                                "error": {
+                                    "type": "string",
+                                    "description": "Error message explaining what went wrong"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
