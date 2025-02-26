@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+
+<%- include('./include/header.ejs', { title: 'SxncD - Login' }) %>
+
+<div class="mdc-card" style="background: linear-gradient(333deg, rgb(0, 53, 0) 0%, rgb(10, 0, 10) 100%);">
+
+	<h3>Login with:</h3>
+	<% for (const type in config.authModules) { %>
+		<div style="width: 100%; padding-bottom: 16px">
+			<button style="width: 100%" class="mdc-button mdc-button--raised mdc-button--leading" onclick="window.location.href='/login/<%= type %>'">
+				<span class="mdc-button__ripple"></span>
+				<i class="material-icons mdc-button__icon" aria-hidden="true"><%= config.authModules[type].icon %></i>
+				<span class="mdc-button__label"><%= config.authModules[type].title %></span>
+			</button>
+		</div>
+	<% } %>
+
+</div>
+
+<%- include('./include/footer.ejs') %>

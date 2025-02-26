@@ -1,0 +1,87 @@
+<head>
+	<title><%= title %></title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" href="/images/icon.svg" type="image/x-icon">
+	<link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500&display=swap" rel="stylesheet">
+	<script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+
+	<style>
+		:root {
+			--md-ref-typeface-brand: 'Open Sans', sans-serif;
+			--md-ref-typeface-plain: system-ui, sans-serif;
+		}
+
+		body {
+			font-family: var(--md-ref-typeface-plain);
+			color: #fff;
+			background-color: rgba(0, 0, 0, 0);
+			background-image: linear-gradient(135deg, #008600 10%, #121 10%, #343 90%, #008600 90%);
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+			margin: 0;
+		}
+
+		div {
+			font-family: var(--md-ref-typeface-plain);
+		}
+
+		h1,
+		h2,
+		h3 {
+			font-family: var(--md-ref-typeface-brand);
+		}
+
+		h1 {
+			font-weight: 400;
+		}
+
+		h2 {
+			font-weight: 500;
+		}
+
+		h3 {
+			font-weight: 500;
+		}
+
+		.mdc-card {
+			padding-bottom: 16px;
+			padding-left: 16px;
+			padding-right: 16px;
+			background-color: rgb(68, 62, 77);
+		}
+
+		.mdc-button {
+			--mdc-theme-primary: rgb(255, 255, 255, .85);
+			--mdc-theme-on-primary: rgb(68, 62, 77);
+
+			/* @include button.ink-color(#84565E); */
+		}
+	</style>
+</head>
+
+<body>
+	<div class="profile-icon-container" style="position: absolute; top: 16px; right: 16px;">
+		<% if (typeof user !== 'undefined' && user) { %>
+			<% if (user.photo) { %>
+				<div class="profile-icon-container" style="position: absolute; top: 16px; right: 16px;">
+					<img src="https://lh3.googleusercontent.com/a/ACg8ocIpkV9Y0yqsrjP9z5II0E9wC0YguRE1kUHQ_DfNwzigVwIm9FfH=s96-c" alt="Profile Photo" class="profile-icon" style="border-radius: 50%; width: 48px; height: 48px;">
+				</div>
+			<% } else { %>
+				<div class="profile-icon" style="border-radius: 50%; width: 48px; height: 48px; display: flex; justify-content: center; align-items: center; background-color: #ddd; color: #008600;">
+					<span style="font-size: 30px"><%= user.username.charAt(0).toUpperCase() %></span>
+				</div>
+			<% } %>
+		<% } %>
+	</div>
+	<div style="width: 90%; max-width: 600px;">
+		<div style="display: flex; align-items: center; justify-content: center; gap: 0px; text-align: center; transform: translateX(-0px);">
+			<div style="width: 200px; padding-bottom: 26px">
+				<%- include('./logo-white.svg') %>
+			</div>
+		</div>
+
